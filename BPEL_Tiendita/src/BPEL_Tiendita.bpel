@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process
+    name="BPEL_Tiendita"
+    targetNamespace="http://enterprise.netbeans.org/bpel/BPEL_Tiendita/BPEL_Tiendita"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/BPEL_Tiendita/BPEL_Tiendita"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
+    xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling"
+    xmlns:ns0="http://wspedido/"
+    xmlns:ns1="http://ws_solicita_autorizacion/"
+    xmlns:ns2="http://ws_mensajeria/">
+
+    <import namespace="http://enterprise.netbeans.org/bpel/WSPedidoWrapper" location="WSPedidoWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/WS_Solicita_AutorizacionWrapper" location="WSCreditoWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/WS_MensajeriaWrapper" location="WSMensajeriaWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface" location="TienditaInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    
+    <import namespace="http://wspedido/" location="http://localhost:8080/WS_Pedidos/WSPedido?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://ws_solicita_autorizacion/" location="http://localhost:8080/WS_Credito/WS_Solicita_Autorizacion?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://ws_mensajeria/" location="http://localhost:8080/WS_Mensajeria/WS_Mensajeria?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+
+    <partnerLinks>
+        <partnerLink name="PL_Almacen" xmlns:tns="http://enterprise.netbeans.org/bpel/WSPedidoWrapper" partnerLinkType="tns:WSPedidoLinkType" partnerRole="WSPedidoRole"/>
+        <partnerLink name="PL_Credito" xmlns:tns="http://enterprise.netbeans.org/bpel/WS_Solicita_AutorizacionWrapper" partnerLinkType="tns:WS_Solicita_AutorizacionLinkType" partnerRole="WS_Solicita_AutorizacionRole"/>
+        <partnerLink name="PL_Mensajeria" xmlns:tns="http://enterprise.netbeans.org/bpel/WS_MensajeriaWrapper" partnerLinkType="tns:WS_MensajeriaLinkType" partnerRole="WS_MensajeriaRole"/>
+        <partnerLink name="PL_Cliente" xmlns:tns="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface" partnerLinkType="tns:TienditaInterface" myRole="TienditaInterfacePortTypeRole"/>
+    </partnerLinks>
+
+    <variables>
+        <variable name="AltaPedidoIn" xmlns:tns="http://wspedido/" messageType="tns:altaPedido"/>
+        <variable name="AltaPedidoOut" xmlns:tns="http://wspedido/" messageType="tns:altaPedidoResponse"/>
+        <variable name="CancelarPedidoIn" xmlns:tns="http://wspedido/" messageType="tns:cancelarPedido"/>
+        <variable name="CancelarPedidoOut" xmlns:tns="http://wspedido/" messageType="tns:cancelarPedidoResponse"/>
+        <variable name="RegistrarEnvioIn" xmlns:tns="http://ws_mensajeria/" messageType="tns:registrarEnvio"/>
+        <variable name="RegistrarEnvioOut" xmlns:tns="http://ws_mensajeria/" messageType="tns:registrarEnvioResponse"/>
+        <variable name="ProcesarCompraIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface" messageType="tns:procesarCompraRequest"/>
+        <variable name="ProcesarCompraOut" xmlns:tns="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface" messageType="tns:procesarCompraResponse"/>
+    </variables>
+
+    <sequence>
+        <receive name="Receive1" createInstance="yes" partnerLink="PL_Cliente" operation="procesarCompra" xmlns:tns="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface" portType="tns:TienditaInterfacePortType" variable="ProcesarCompraIn"/>
+        
+        <assign name="Assign1">
+            <copy>
+                <from variable="ProcesarCompraIn" part="part1"/>
+                <to>$AltaPedidoIn.parameters/id_clte</to>
+            </copy>
+            <copy>
+                <from>1</from>
+                <to>$AltaPedidoIn.parameters/lista_it[1]/id_prod</to>
+            </copy>
+            <copy>
+                <from>1</from>
+                <to>$AltaPedidoIn.parameters/lista_it[1]/cantidad</to>
+            </copy>
+            <copy>
+                <from>2</from>
+                <to>$AltaPedidoIn.parameters/lista_it[2]/id_prod</to>
+            </copy>
+            <copy>
+                <from>2</from>
+                <to>$AltaPedidoIn.parameters/lista_it[2]/cantidad</to>
+            </copy>
+        </assign>
+        
+        <invoke name="InvocarAlmacen" partnerLink="PL_Almacen" operation="altaPedido" xmlns:tns="http://wspedido/" portType="tns:WSPedido" inputVariable="AltaPedidoIn" outputVariable="AltaPedidoOut"/>
+        
+        <if name="If_HayStock">
+            <condition>$AltaPedidoOut.parameters/return &gt; 0</condition>
+            
+            <sequence>
+                <scope name="Scope_Credito">
+                    <variables>
+                        <variable name="SolicitaAutorizacionExOut" xmlns:tns="http://ws_solicita_autorizacion/" messageType="tns:solicitaAutorizacionExResponse"/>
+                        <variable name="SolicitaAutorizacionExIn" xmlns:tns="http://ws_solicita_autorizacion/" messageType="tns:solicitaAutorizacionEx"/>
+                        <variable name="FaultVar" xmlns:tns="http://ws_solicita_autorizacion/" messageType="tns:NegocioException"/>
+                    </variables>
+                    
+                    <faultHandlers>
+                        <catch faultName="ns1:NegocioException" faultVariable="FaultVar" faultMessageType="ns1:NegocioException">
+                            <sequence name="Seq_Restitucion">
+                                <assign name="Assign_Restituir">
+                                    <copy>
+                                        <from>$AltaPedidoOut.parameters/return</from>
+                                        <to>$CancelarPedidoIn.parameters/idPedido</to>
+                                    </copy>
+                                </assign>
+                                <invoke name="InvocarRestitucion" partnerLink="PL_Almacen" operation="cancelarPedido" xmlns:tns="http://wspedido/" portType="tns:WSPedido" inputVariable="CancelarPedidoIn" outputVariable="CancelarPedidoOut"/>
+                                
+                                <assign name="Assign_ErrorMsg">
+                                    <copy>
+                                        <from>'Error: Credito rechazado. Stock restituido.'</from>
+                                        <to variable="ProcesarCompraOut" part="part1"/>
+                                    </copy>
+                                </assign>
+                            </sequence>
+                        </catch>
+                    </faultHandlers>
+                    
+                    <sequence>
+                        <assign name="Assign_Credito">
+                            <copy>
+                                <from variable="ProcesarCompraIn" part="part1"/>
+                                <to>$SolicitaAutorizacionExIn.parameters/idClte</to>
+                            </copy>
+                            <copy>
+                                <from>1</from>
+                                <to>$SolicitaAutorizacionExIn.parameters/idProv</to>
+                            </copy>
+                            <copy>
+                                <from>500.0</from>
+                                <to>$SolicitaAutorizacionExIn.parameters/dblMonto</to>
+                            </copy>
+                        </assign>
+                        <invoke name="CobrarCredito" partnerLink="PL_Credito" operation="solicitaAutorizacionEx" xmlns:tns="http://ws_solicita_autorizacion/" portType="tns:WS_Solicita_Autorizacion" inputVariable="SolicitaAutorizacionExIn" outputVariable="SolicitaAutorizacionExOut"/>
+                        
+                        <assign name="Assign_Mensajeria">
+                            <copy>
+                                <from>$AltaPedidoOut.parameters/return</from>
+                                <to>$RegistrarEnvioIn.parameters/idPedido</to>
+                            </copy>
+                            <copy>
+                                <from variable="ProcesarCompraIn" part="part1"/>
+                                <to>$RegistrarEnvioIn.parameters/idCliente</to>
+                            </copy>
+                        </assign>
+                        <invoke name="InvocarMensajeria" partnerLink="PL_Mensajeria" operation="registrarEnvio" xmlns:tns="http://ws_mensajeria/" portType="tns:WS_Mensajeria" inputVariable="RegistrarEnvioIn" outputVariable="RegistrarEnvioOut"/>
+                        
+                        <assign name="Assign_Exito">
+                            <copy>
+                                <from>concat('Exito. Entrega estimada: ', $RegistrarEnvioOut.parameters/return/fechaEntrega)</from>
+                                <to variable="ProcesarCompraOut" part="part1"/>
+                            </copy>
+                        </assign>
+                    </sequence>
+                </scope>
+            </sequence>
+            
+            <else>
+                <assign name="Assign_NoStock">
+                    <copy>
+                        <from>'Error: No hay Stock'</from>
+                        <to variable="ProcesarCompraOut" part="part1"/>
+                    </copy>
+                </assign>
+            </else>
+        </if>
+        
+        <reply name="Reply1" partnerLink="PL_Cliente" operation="procesarCompra" xmlns:tns="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface" portType="tns:TienditaInterfacePortType" variable="ProcesarCompraOut"/>
+    </sequence>
+</process>

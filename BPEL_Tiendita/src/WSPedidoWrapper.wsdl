@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="WSPedidoWrapper"
+             targetNamespace="http://enterprise.netbeans.org/bpel/WSPedidoWrapper"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://enterprise.netbeans.org/bpel/WSPedidoWrapper"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:ns="http://wspedido/">
+
+    <import namespace="http://wspedido/" location="http://localhost:8080/WS_Pedidos/WSPedido?wsdl"/>
+
+    <plnk:partnerLinkType name="WSPedidoLinkType">
+        <plnk:role name="WSPedidoRole" portType="ns:WSPedido"/>
+    </plnk:partnerLinkType>
+</definitions>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="WS_MensajeriaWrapper"
+             targetNamespace="http://enterprise.netbeans.org/bpel/WS_MensajeriaWrapper"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://enterprise.netbeans.org/bpel/WS_MensajeriaWrapper"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:ns="http://ws_mensajeria/">
+
+    <import namespace="http://ws_mensajeria/" location="http://localhost:8080/WS_Mensajeria/WS_Mensajeria?wsdl"/>
+
+    <plnk:partnerLinkType name="WS_MensajeriaLinkType">
+        <plnk:role name="WS_MensajeriaRole" portType="ns:WS_Mensajeria"/>
+    </plnk:partnerLinkType>
+</definitions>
