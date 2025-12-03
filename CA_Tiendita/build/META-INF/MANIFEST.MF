@@ -1,0 +1,4 @@
+Bundle-Name: CA_Tiendita
+Bundle-SymbolicName: CA_Tiendita
+Bundle-ManifestVersion: 2
+Bundle-Version: 1.0.0

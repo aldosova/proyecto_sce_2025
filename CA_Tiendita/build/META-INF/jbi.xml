@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns1="http://enterprise.netbeans.org/bpel/BPEL_Tiendita/BPEL_Tiendita" xmlns:ns2="http://ws_solicita_autorizacion/" xmlns:ns3="http://wspedido/" xmlns:ns4="http://ws_mensajeria/" xmlns:ns5="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/jbi ./jbi.xsd">
+    <service-assembly>
+        <identification>
+            <name>CA_Tiendita</name>
+            <description>Represents the Service Assembly of CA_Tiendita</description>
+        </identification>
+        <service-unit>
+            <identification>
+                <name>CA_Tiendita-BPEL_Tiendita</name>
+                <description>Represents this Service Unit</description>
+            </identification>
+            <target>
+                <artifacts-zip>BPEL_Tiendita.jar</artifacts-zip>
+                <component-name>sun-bpel-engine</component-name>
+            </target>
+        </service-unit>
+        <service-unit>
+            <identification>
+                <name>CA_Tiendita-sun-http-binding</name>
+                <description>Represents this Service Unit</description>
+            </identification>
+            <target>
+                <artifacts-zip>sun-http-binding.jar</artifacts-zip>
+                <component-name>sun-http-binding</component-name>
+            </target>
+        </service-unit>
+        <connections>
+            <connection>
+                <consumer endpoint-name="WS_Solicita_AutorizacionRole_partnerRole" service-name="ns1:PL_Credito"/>
+                <provider endpoint-name="WS_Solicita_AutorizacionPort" service-name="ns2:WS_Solicita_Autorizacion"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="WSPedidoRole_partnerRole" service-name="ns1:PL_Almacen"/>
+                <provider endpoint-name="WSPedidoPort" service-name="ns3:WSPedido"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="WS_MensajeriaRole_partnerRole" service-name="ns1:PL_Mensajeria"/>
+                <provider endpoint-name="WS_MensajeriaPort" service-name="ns4:WS_Mensajeria"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="TienditaInterfacePort" service-name="ns5:TienditaInterfaceService"/>
+                <provider endpoint-name="TienditaInterfacePortTypeRole_myRole" service-name="ns1:PL_Cliente"/>
+            </connection>
+        </connections>
+        <route-types xmlns="http://www.open-esb.net/xml/ns/jbi">
+            <source endpoint-name="WS_Solicita_AutorizacionRole_partnerRole" mode="local" routing-rule="default" service-name="ns1:PL_Credito">direct</source>
+            <source endpoint-name="WSPedidoRole_partnerRole" mode="local" routing-rule="default" service-name="ns1:PL_Almacen">direct</source>
+            <source endpoint-name="WS_MensajeriaRole_partnerRole" mode="local" routing-rule="default" service-name="ns1:PL_Mensajeria">direct</source>
+            <source endpoint-name="TienditaInterfacePort" mode="local" routing-rule="default" service-name="ns5:TienditaInterfaceService">direct</source>
+        </route-types>
+        <interface-mapping xmlns="http://www.open-esb.net/xml/ns/jbi">
+            <implementation>
+                <by-provider endpoint-name="TienditaInterfacePortTypeRole_myRole" service-name="ns1:PL_Cliente"/>
+                <interface name="ns5:TienditaInterfacePortType"/>
+            </implementation>
+            <implementation>
+                <by-provider endpoint-name="WS_Solicita_AutorizacionPort" service-name="ns2:WS_Solicita_Autorizacion"/>
+                <interface name="ns2:WS_Solicita_Autorizacion"/>
+            </implementation>
+            <implementation>
+                <by-provider endpoint-name="WSPedidoPort" service-name="ns3:WSPedido"/>
+                <interface name="ns3:WSPedido"/>
+            </implementation>
+            <implementation>
+                <by-provider endpoint-name="WS_MensajeriaPort" service-name="ns4:WS_Mensajeria"/>
+                <interface name="ns4:WS_Mensajeria"/>
+            </implementation>
+        </interface-mapping>
+    </service-assembly>
+</jbi>

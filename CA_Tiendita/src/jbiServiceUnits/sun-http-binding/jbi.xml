@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns1="http://enterprise.netbeans.org/bpel/BPEL_Tiendita/BPEL_Tiendita" xmlns:ns2="http://ws_solicita_autorizacion/" xmlns:ns3="http://wspedido/" xmlns:ns4="http://ws_mensajeria/" xmlns:ns5="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface" version="1.0">
+    <services binding-component="true">
+        <provides endpoint-name="WS_Solicita_AutorizacionPort" interface-name="ns2:WS_Solicita_Autorizacion" service-name="ns2:WS_Solicita_Autorizacion"/>
+        <provides endpoint-name="WSPedidoPort" interface-name="ns3:WSPedido" service-name="ns3:WSPedido"/>
+        <provides endpoint-name="WS_MensajeriaPort" interface-name="ns4:WS_Mensajeria" service-name="ns4:WS_Mensajeria"/>
+        <consumes endpoint-name="TienditaInterfacePort" interface-name="ns5:TienditaInterfacePortType" service-name="ns5:TienditaInterfaceService"/>
+    </services>
+</jbi>

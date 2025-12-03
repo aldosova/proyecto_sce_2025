@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns0="http://enterprise.netbeans.org/bpel/BPEL_Tiendita/BPEL_Tiendita" xmlns:ns1="http://wspedido/" xmlns:ns2="http://ws_solicita_autorizacion/" xmlns:ns3="http://ws_mensajeria/" xmlns:ns4="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface" xmlns:ns5="http://www.sun.com/jbi/descriptor/service-unit" version="1.0">
+    <services binding-component="false">
+        <provides endpoint-name="TienditaInterfacePortTypeRole_myRole" interface-name="ns4:TienditaInterfacePortType" service-name="ns0:PL_Cliente">
+            <ns5:display-name>PL_Cliente</ns5:display-name>
+            <ns5:process-name>BPEL_Tiendita</ns5:process-name>
+            <ns5:file-path>BPEL_Tiendita.bpel</ns5:file-path>
+        </provides>
+        <consumes endpoint-name="WSPedidoRole_partnerRole" interface-name="ns1:WSPedido" service-name="ns0:PL_Almacen">
+            <ns5:display-name>PL_Almacen</ns5:display-name>
+            <ns5:process-name>BPEL_Tiendita</ns5:process-name>
+            <ns5:file-path>BPEL_Tiendita.bpel</ns5:file-path>
+        </consumes>
+        <consumes endpoint-name="WS_Solicita_AutorizacionRole_partnerRole" interface-name="ns2:WS_Solicita_Autorizacion" service-name="ns0:PL_Credito">
+            <ns5:display-name>PL_Credito</ns5:display-name>
+            <ns5:process-name>BPEL_Tiendita</ns5:process-name>
+            <ns5:file-path>BPEL_Tiendita.bpel</ns5:file-path>
+        </consumes>
+        <consumes endpoint-name="WS_MensajeriaRole_partnerRole" interface-name="ns3:WS_Mensajeria" service-name="ns0:PL_Mensajeria">
+            <ns5:display-name>PL_Mensajeria</ns5:display-name>
+            <ns5:process-name>BPEL_Tiendita</ns5:process-name>
+            <ns5:file-path>BPEL_Tiendita.bpel</ns5:file-path>
+        </consumes>
+    </services>
+</jbi>

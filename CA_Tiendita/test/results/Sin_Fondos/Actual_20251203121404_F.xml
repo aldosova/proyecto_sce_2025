@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <m:procesarCompraResponse xmlns:m="http://j2ee.netbeans.org/wsdl/BPEL_Tiendita/src/TienditaInterface">
+      <part1>Exito. Entrega estimada: 2025-12-08T12:14:04.167-06:00</part1>
+    </m:procesarCompraResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
